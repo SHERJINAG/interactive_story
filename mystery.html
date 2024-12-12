@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Story</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .story-container {
+      width: 80%;
+      max-width: 900px;
+      margin: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border: 2px solid #333;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    h2 {
+      font-weight: bold;
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #storyImage {
+      width: 60%;  /* Reduced the image size */
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      max-height: 250px; /* Further resizing */
+      object-fit: cover;
+    }
+
+    #storyContent {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .choices button {
+      padding: 12px 25px;
+      background-color: #008CBA;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .choices button:hover {
+      background-color: #006f89;
+    }
+
+    #endButton {
+      padding: 12px 25px;
+      background-color: #28a745; /* Green color */
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+      display: none; /* Initially hidden */
+    }
+
+    #endButton:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="story-container">
+    <h2 id="storyTitle"></h2>
+    <img id="storyImage" src="" alt="mystery Image">
+    <p id="storyContent"></p>
+    <div id="choices" class="choices"></div>
+    <button id="endButton">End</button>
+  </div>
+
+  <script type="module">
+    import { getRandomStory } from './mystery.js';
+
+    const story = getRandomStory();
+
+    // Display the title
+    document.getElementById('storyTitle').innerText = story.title;
+    document.getElementById('storyContent').innerText = story.story_content;
+    document.getElementById('storyImage').src = `images/${story.sport_image}`;
+
+    // Display choices for the first interaction
+    function showChoices(choices) {
+      const choicesContainer = document.getElementById('choices');
+      choicesContainer.innerHTML = ''; // Clear previous choices
+
+      choices.forEach((choice, index) => {
+        const button = document.createElement('button');
+        button.textContent = choice;
+        button.onclick = () => handleChoice(index + 1); // Pass the index as choice
+        choicesContainer.appendChild(button);
+      });
+    }
+
+    let currentInteraction = 1;
+
+    function handleChoice(choiceIndex) {
+      const outcome = story.outcomes[choiceIndex];
+
+      // Update story content with the result
+      document.getElementById('storyContent').innerText += `\n${outcome.result}`;
+      currentInteraction++;
+
+      if (currentInteraction < 3) {
+        // Show next set of choices
+        showChoices(outcome.next_choices || []);
+      } else {
+        // Final interaction
+        showFinalChoices();
+      }
+    }
+
+    function showFinalChoices() {
+      const finalChoice = story.final_interaction;
+      const choicesContainer = document.getElementById('choices');
+      choicesContainer.innerHTML = '';
+
+      // Display final interaction choices
+      document.getElementById('storyContent').innerText += `\n${finalChoice.situation}`;
+      finalChoice.choices.forEach((choice, index) => {
+        const button = document.createElement('button');
+        button.textContent = choice;
+        button.onclick = () => handleFinalChoice(index + 1); // Pass the final choice
+        choicesContainer.appendChild(button);
+      });
+    }
+
+    function handleFinalChoice(choiceIndex) {
+      const outcome = story.final_interaction.outcomes[choiceIndex];
+
+      // Update the story with final outcome
+      document.getElementById('storyContent').innerText += `\n${outcome.result}`;
+
+      // Hide interaction buttons and show "End" button
+      document.getElementById('choices').style.display = 'none';
+      document.getElementById('endButton').style.display = 'block'; // Show End button
+    }
+
+    function endStory() {
+      window.location.href = "index.html"; // Redirect to index.html after clicking End
+    }
+
+    // Add event listener for the "End" button
+    document.getElementById('endButton').addEventListener('click', endStory);
+
+    // Show initial choices
+    showChoices(story.choices);
+  </script>
+
+</body>
+</html>

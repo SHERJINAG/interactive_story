@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Genres - Explore Your World of Stories</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section {
+            padding: 30px;
+            margin: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .story-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .genre {
+            background-color: #e0e0e0;
+            padding: 20px;
+            border-radius: 5px;
+            width: 45%;
+            box-sizing: border-box;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .genre:hover {
+            background-color: #c0c0c0;
+        }
+        .interactive-story {
+            display: none;
+            margin-top: 20px;
+        }
+        .story-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .contact-form button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .contact-form button:hover {
+            background-color: #555;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Explore Your World of Stories</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#story">Story Genres</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <h2>Welcome to Our Story World!</h2>
+        <p>Explore exciting stories across various genres. Whether you're looking for action, romance, mystery, or sci-fi, we have something for everyone. Let's dive in and find the perfect story for you.</p>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story">
+        <h2>Choose Your Genre</h2>
+        <div class="story-content">
+            <div class="genre" onclick="window.location.href='sports.html'">1. Sports</div>
+            <div class="genre" onclick="window.location.href='romance.html'">2. Romance</div>
+            <div class="genre" onclick="window.location.href='darma.html'">3. Drama</div>
+            <div class="genre" onclick="window.location.href='adventure.html'">4. Adventure</div>
+            <div class="genre" onclick="window.location.href='comedy.html'">5. Comedy</div>
+            <div class="genre" onclick="window.location.href='action.html'">6. Action</div>
+            <div class="genre" onclick="window.location.href='horrer.html'">7. Horror</div>
+            <div class="genre" onclick="window.location.href='mystery.html'">8. Mystery</div>
+            <div class="genre" onclick="window.location.href='thriller.html'">9. Thriller</div>
+            <div class="genre" onclick="window.location.href='sci.html'">10. Sci-Fi</div>
+        </div>
+
+       
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Us</h2>
+        <p>We are passionate about stories and believe in the power of storytelling. Our website is designed to provide a curated collection of stories from a variety of genres. Whether you’re a fan of action-packed adventures or deep emotional dramas, we have something for everyone.</p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions or suggestions, feel free to reach out to us! We'd love to hear from you.</p>
+        <div class="contact-form">
+            <input type="text" placeholder="Your Name" id="name" required>
+            <input type="email" placeholder="Your Email" id="email" required>
+            <textarea placeholder="Your Message" id="message" required></textarea>
+            <button type="button" onclick="submitForm()">Submit</button>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>Last updated: December 2024</p>
+    </footer>
+
+    <!-- JavaScript for Interactive Stories -->
+    <script>
+        function showStory(genre) {
+            // Hide all other stories
+            const stories = document.querySelectorAll('.interactive-story');
+            stories.forEach(story => story.style.display = 'none');
+
+            // Show the selected genre story
+            const story = document.getElementById(genre + '-story');
+            if (story) {
+                story.style.display = 'block';
+            }
+        }
+
+        function nextChoice(genre, choice) {
+            let result = '';
+            if (genre === 'action') {
+                if (choice === 'left') {
+                    result = 'You take the left alley and lose the villains. Victory is yours!';
+                } else {
+                    result = 'You take the right road and encounter another group of enemies. The chase continues!';
+                }
+            } else if (genre === 'romance') {
+                if (choice === 'approach') {
+                    result = 'You approach them and strike up a conversation. A new romance begins!';
+                } else {
+                    result = 'You wait and see. The stranger notices your hesitation, and the moment passes.';
+                }
+            }
+            document.getElementById(genre + '-choice-result').innerText = result;
+        }
+
+        function submitForm() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            if (name && email && message) {
+                alert("Thank you for your message, " + name + "!");
+                document.getElementById("name").value = '';
+                document.getElementById("email").value = '';
+                document.getElementById("message").value = '';
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+    </script>
+
+</body>
+</html>
